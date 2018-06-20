@@ -1,0 +1,12 @@
+define KMACHINE admxrc9z
+define KTYPE standard
+define KARCH arm
+
+include ktypes/standard/standard.scc
+branch admxrc9z
+
+include admxrc9z.scc
+
+# default policy for standard kernels
+include features/latencytop/latencytop.scc
+include features/profiling/profiling.scc

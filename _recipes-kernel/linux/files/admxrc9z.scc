@@ -1,0 +1,5 @@
+kconf hardware admxrc9z.cfg
+include features/usb-net/usb-net.scc
+
+kconf hardware admxrc9z-user-config.cfg
+include admxrc9z-user-patches.scc

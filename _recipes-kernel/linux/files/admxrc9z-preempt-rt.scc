@@ -1,0 +1,12 @@
+define KMACHINE admxrc9z
+define KTYPE preempt-rt
+define KARCH arm
+
+include ktypes/preempt-rt/preempt-rt.scc
+branch admxrc9z
+
+include admxrc9z.scc
+
+# default policy for preempt-rt kernels
+include features/latencytop/latencytop.scc
+include features/profiling/profiling.scc
