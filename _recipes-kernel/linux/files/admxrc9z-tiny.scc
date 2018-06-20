@@ -1,8 +1,0 @@
-define KMACHINE admxrc9z
-define KTYPE tiny
-define KARCH arm
-
-include ktypes/tiny/tiny.scc
-branch admxrc9z
-
-include admxrc9z.scc
