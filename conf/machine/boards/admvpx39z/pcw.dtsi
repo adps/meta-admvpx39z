@@ -33,68 +33,16 @@
 	status = "okay";
 };
 &xlnx_dp {
-	phy-names = "dp-phy0";
+	phy-names = "dp-phy0"; 
+/*,"dp-phy1";*/
 	phys = <&lane3 5 0 1 27000000>;
+		/*<&lane2 5 1 1 27000000>;*/
 	status = "okay";
 	xlnx,max-lanes = <1>;
 };
 &xlnx_dpdma {
 	status = "okay";
 };
-/*&gem1 {
-	phy-mode = "rgmii-id";
-	status = "disabled";
-	xlnx,ptp-enet-clock = <0x0>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_gem1_default>;
-	local-mac-address = [00 0a 35 00 00 00];
-	mdio {
-		#address-cells = <1>;
-		#size-cells = <0>;
-		phy0: phy@0 {
-			compatible = "marvell,88e1112";
-			device_type = "ethernet-phy";
-			reg = <1>;
-		} ;
-	} ;
-
-
-};
-&gem3 {
-	phy-mode = "rgmii-id";
-	status = "okay";
-	xlnx,ptp-enet-clock = <0x0>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_gem3_default>;
-	local-mac-address = [00 0a 35 00 00 01];
-        mdio {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                phy1: phy@1 {
-                        compatible = "marvell,88e1112";
-                        device_type = "ethernet-phy";
-                        reg = <1>;
-                } ;
-        } ;
-
-};*/
-
-/*&gem1 {
-	phy-mode = "rgmii-id";
-	status = "okay";
-	xlnx,ptp-enet-clock = <0x0>;
-
-        mdio {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                phy_gem1: phy@0 {
-                        compatible = "marvell,88e1112";
-                        device_type = "ethernet-phy";
-                        reg = <0>;
-                } ;
-        } ;
-
-};*/
 
 &gem1 {
         phy-mode = "rgmii-id";
@@ -143,44 +91,6 @@
 };
 &pinctrl0 {
 	status = "okay";
-
-        /*pinctrl_gem1_default: gem1-default {
-                mux {
-                        function = "ethernet1";
-                        groups = "ethernet1_0_grp";
-                };
-
-                conf {
-                        groups = "ethernet1_0_grp";
-                        slew-rate = <0x1>;
-                        io-standard = <0x1>;
-                };
-
-                conf-rx {
-                        pins = "MIO44", "MIO45", "MIO46", "MIO47", "MIO48", "MIO49";
-                        bias-high-impedance;
-                        low-power-disable;
-                };
-
-                conf-tx {
-                        pins = "MIO38", "MIO39", "MIO40", "MIO41", "MIO42", "MIO43";
-                        bias-disable;
-                        low-power-enable;
-                };
-
-                mux-mdio {
-                        function = "mdio1";
-                        groups = "mdio1_0_grp";
-                };
-                conf-mdio {
-                        groups = "mdio1_0_grp";
-                        slew-rate = <0x1>;
-                        io-standard = <0x1>;
-                        bias-disable;
-                };
-
-        };*/
-
 	pinctrl_gem3_default: gem3-default {
 		mux {
 			function = "ethernet3";
@@ -243,44 +153,6 @@
         };
 
      	pinctrl_sdhci0_default: sdhci0-default {
-        /*        mux {
-                        groups = "sdio0_0_grp";
-                        function = "sdio0";
-                };
-
-                conf {
-                        groups = "sdio0_0_grp";
-                        slew-rate = <1>;
-                        io-standard = <1>;
-                        bias-disable;
-                };
-
-                mux-cd {
-                        groups = "sdio0_0_cd_grp";
-                        function = "sdio1_cd";
-                };
-
-                conf-cd {
-                        groups = "sdio0_0_cd_grp";
-                        bias-high-impedance;
-                        bias-pull-up;
-                        slew-rate = <1>;
-                        io-standard = <1>;
-                };
-
-                mux-wp {
-                        groups = "sdio0_0_wp_grp";
-                        function = "sdio1_wp";
-                };
-
-                conf-wp {
-                        groups = "sdio0_0_wp_grp";
-                        bias-high-impedance;
-                        bias-pull-up;
-                        slew-rate = <1>;
-                        io-standard = <1>;
-                };
-	*/
         };
 };
 &rtc {
@@ -289,7 +161,7 @@
 &fclk0 {
 	status = "okay";
 };
-/*&sata {
+&sata {
 
 	ceva,p0-cominit-params = <0x18401828>;
 	ceva,p0-comwake-params = <0x614080e>;
@@ -301,9 +173,10 @@
 	ceva,p1-retry-params = <0x96a43ffc>;
 	
 	phy-names = "sata-phy";
-	phys = <&lane1 0x1 0x1 0x1 150000000>;
-	status = "disabled";
-};*/
+	phys = <&lane0 1 0 0 125000000>,
+		<&lane1 1 1 0 125000000>;
+	status = "okay";
+};
 &sdhci0 {
 	clock-frequency = <200000000>;
 	status = "okay";
@@ -330,16 +203,17 @@
 };
 &usb0 {
 	status = "okay";
+	/delete-property/clocks;
+	/delete-property/clock-names;
 	xlnx,usb-reset = <0x2faf080>;
-        pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_usb0_default>;
+	clocks = <0x3 0x20>;
+	clock-names = "bus_clk";
 };
+
 &dwc3_0 {
 	status = "okay";
 	dr_mode = "host";
-	phy-names = "usb3-phy";
-	snps,usb3_lpm_capable;
-	phys = <&lane0 4 0 0 100000000>;
+	maximum-speed = "high-speed";
 };
 &pss_ref_clk {
 	clock-frequency = <50000000>;
