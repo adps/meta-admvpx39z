@@ -33,12 +33,11 @@
 	status = "okay";
 };
 &xlnx_dp {
-	phy-names = "dp-phy0"; 
-/*,"dp-phy1";*/
-	phys = <&lane3 5 0 1 27000000>;
-		/*<&lane2 5 1 1 27000000>;*/
+	phy-names = "dp-phy0","dp-phy1";
+	phys = <&lane3 5 0 1 27000000>, 
+		<&lane2 5 1 1 27000000>;
 	status = "okay";
-	xlnx,max-lanes = <1>;
+	xlnx,max-lanes = <2>;
 };
 &xlnx_dpdma {
 	status = "okay";
@@ -50,6 +49,17 @@
         xlnx,ptp-enet-clock = <0x0>;
 	phy-handle = <&phy0>;
         phy0: phy@0 {
+                reg = <0>;
+        };
+
+} ;
+
+&gem3 {
+        phy-mode = "rgmii-id";
+        status = "okay";
+        xlnx,ptp-enet-clock = <0x0>;
+	phy-handle = <&phy1>;
+        phy1: phy@0 {
                 reg = <0>;
         };
 
@@ -89,45 +99,42 @@
 &gpu {
 	status = "okay";
 };
+&qspi {
+	is-dual = <1>;
+	num-cs = <1>;
+	spi-rx-bus-width = <4>;
+	spi-tx-bus-width = <4>;
+	status = "okay";
+	flash@0 {
+		compatible = "n25q256a11";
+		reg = <0x0>;
+		spi-max-frequency = <30000000>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		partition@qspi-fsbl-uboot {
+			label = "qspi-fsbl-uboot";
+			reg = <0x0 0x100000>;
+		};
+		partition@qspi-linux {
+			label = "qspi-linux";
+			reg = <0x100000 0x500000>;
+		};
+		partition@qspi-device-tree {
+			label = "qspi-device-tree";
+			reg = <0x600000 0x20000>;
+		};
+		partition@qspi-rootfs {
+			label = "qspi-rootfs";
+			reg = <0x620000 0x1400000>;
+		};
+		partition@qspi-bitstream {
+			label = "qspi-bitstream";
+			reg = <0x1a20000 0x400000>;
+		};
+	};
+};
 &pinctrl0 {
 	status = "okay";
-	pinctrl_gem3_default: gem3-default {
-		mux {
-			function = "ethernet3";
-			groups = "ethernet3_0_grp";
-		};
-	
-		conf {
-			groups = "ethernet3_0_grp";
-			slew-rate = <0x1>;
-			io-standard = <0x1>;
-		};
-
-		conf-rx {
-			pins = "MIO70", "MIO71", "MIO72", "MIO73", "MIO74", "MIO75";
-			bias-high-impedance;
-			low-power-disable;
-		};
-
-		conf-tx {
-			pins = "MIO64", "MIO65", "MIO66", "MIO67", "MIO68", "MIO69";
-			bias-disable;
-			low-power-enable;
-		};
-
-		mux-mdio {
-			function = "mdio3";
-			groups = "mdio3_0_grp";
-		};
-		conf-mdio {
-			groups = "mdio3_0_grp";
-			slew-rate = <0x1>;
-			io-standard = <0x1>;
-			bias-disable;
-		};
-		
-	};
-
         pinctrl_usb0_default: usb0-default {
                 mux {
                         groups = "usb0_0_grp";
@@ -173,8 +180,8 @@
 	ceva,p1-retry-params = <0x96a43ffc>;
 	
 	phy-names = "sata-phy";
-	phys = <&lane0 1 0 0 125000000>,
-		<&lane1 1 1 0 125000000>;
+	phys = <&lane0 0x1 0x0 0x0 125000000>,
+		<&lane1 0x1 0x1 0x0 125000000>;
 	status = "okay";
 };
 &sdhci0 {
@@ -203,18 +210,23 @@
 };
 &usb0 {
 	status = "okay";
-	/delete-property/clocks;
-	/delete-property/clock-names;
-	xlnx,usb-reset = <0x2faf080>;
-	clocks = <0x3 0x20>;
 	clock-names = "bus_clk";
+	clocks = <0x3 0x20>;
+	xlnx,usb-reset = <0x2faf080>;
 };
-
 &dwc3_0 {
 	status = "okay";
 	dr_mode = "host";
 	maximum-speed = "high-speed";
-};
+
+} ;
+/*&dwc3_0 {
+	status = "okay";
+	dr_mode = "host";
+	phy-names = "usb3-phy";
+	snps,usb3_lpm_capable;
+	phys = <&lane0 4 0 0 100000000>;
+};*/
 &pss_ref_clk {
 	clock-frequency = <50000000>;
 };

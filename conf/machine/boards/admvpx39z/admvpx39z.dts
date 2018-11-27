@@ -11,12 +11,12 @@
 	};
 	aliases {
 		ethernet0 = &gem1;
-		/*ethernet1 = &gem3;*/
+		ethernet1 = &gem3;
 		serial0 = &uart0;
 	};
 	memory {
 		device_type = "memory";
-		reg = <0x0 0x0 0x0 0x80000000>, <0x00000008 0x00000000 0x0 0x80000000>;
+		reg = <0x0 0x0 0x0 0x80000000>, <0x00000008 0x00000000 0x1 0x80000000>;
 	};
 };
 
