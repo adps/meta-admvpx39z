@@ -125,6 +125,8 @@
 	clock-frequency = <175000000>;
 	status = "okay";
 	xlnx,mio_bank = <0x0>;
+	no-1-8-v;
+	wp-inverted;
 };
 &serdes {
 	status = "okay";
