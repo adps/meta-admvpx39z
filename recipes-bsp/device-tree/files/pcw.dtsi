@@ -143,29 +143,19 @@
 	status = "okay";
 	u-boot,dm-pre-reloc ;
 };
+
 &usb0 {
 	status = "okay";
-	xlnx,usb-polarity = <0x0>;
-	xlnx,usb-reset-mode = <0x0>;
+	clock-names = "bus_clk";
+	clocks = <0x3 0x20>;
+	xlnx,usb-reset = <0x2faf080>;
 };
-
 &dwc3_0 {
-        status = "okay";
-        dr_mode = "host";
-        maximum-speed = "high-speed";
-        snps,dis_u2_susphy_quirk ;
-        snps,dis_u3_susphy_quirk ;
-
+	status = "okay";
+	dr_mode = "host";
+	maximum-speed = "high-speed";
 
 } ;
-/*&dwc3_0 {
-	/delete-property/ phy-names ;
-	/delete-property/ phys ;
-	maximum-speed = "high-speed";
-	snps,dis_u2_susphy_quirk ;
-	snps,dis_u3_susphy_quirk ;
-	status = "okay";
-};*/
 &pss_ref_clk {
 	clock-frequency = <50000000>;
 };
